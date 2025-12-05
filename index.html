@@ -5,7 +5,7 @@
 
 <style>
 /* ============================================================
-   DEHONG PREMIUM + PLAYFUL PATHWAYS DESIGN
+   Dehong Pathways Selector – Core Layout & Styling
    ============================================================ */
 
 /* ---- BRAND COLOURS ---- */
@@ -41,7 +41,7 @@ body {
 }
 
 /* ============================================================
-   THREE-COLUMN LAYOUT
+   Three-column Layout
    ============================================================ */
 main {
   display: grid;
@@ -320,7 +320,7 @@ main {
 }
 
 /* ============================================================
-   PREMIUM + PLAYFUL MODE SELECTOR
+   Mode Selector
    ============================================================ */
 #mode-selector {
   display: flex;
@@ -606,7 +606,143 @@ main {
 }
 
 /* ============================================================
-   ANIMATIONS
+   Responsive Layout – Tablet & Mobile
+   ============================================================ */
+
+/* Tablet and small laptop: stack the three columns vertically */
+@media (max-width: 1024px) {
+  main {
+    display: block;
+    min-height: auto;
+  }
+
+  #instructions,
+  #available,
+  #pathway {
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid #2A3040;
+    padding: 16px 16px 18px;
+  }
+
+  #instructions h2,
+  #available h2,
+  #pathway h2 {
+    font-size: 1.1rem;
+  }
+
+  #available-grid {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+
+  #blocks {
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 14px;
+  }
+
+  .block {
+    min-height: 130px;
+  }
+
+  .preview-panel {
+    width: min(900px, 94vw);
+    max-height: 82vh;
+  }
+}
+
+/* Mobile: tighter layout, horizontal scroll for mode selector, single-column grids */
+@media (max-width: 700px) {
+  body {
+    font-size: 14px;
+  }
+
+  #mode-selector {
+    padding: 10px 12px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+  }
+
+  #mode-selector::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  #mode-selector::-webkit-scrollbar-thumb {
+    background: #2D3244;
+    border-radius: 3px;
+  }
+
+  .mode-card {
+    flex: 0 0 210px;
+    min-width: 210px;
+    padding: 16px 12px;
+  }
+
+  .mode-title {
+    font-size: 1rem;
+  }
+
+  .mode-subtitle {
+    font-size: 0.8rem;
+  }
+
+  main {
+    display: block;
+  }
+
+  #instructions,
+  #available,
+  #pathway {
+    padding: 14px 12px 16px;
+    border-bottom: 1px solid #2A3040;
+  }
+
+  #available-grid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  #blocks {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  #student-info {
+    margin-top: 10px;
+    margin-bottom: 12px;
+    padding: 12px 12px 10px;
+  }
+
+  .card {
+    padding: 12px;
+  }
+
+  .block {
+    padding: 12px;
+  }
+
+  .preview-panel {
+    width: 94vw;
+    max-height: 80vh;
+  }
+
+  .preview-body {
+    padding: 10px 12px 12px;
+  }
+
+  .preview-header,
+  .preview-footer {
+    padding: 8px 12px;
+  }
+
+  .preview-title {
+    font-size: 0.95rem;
+  }
+}
+
+/* ============================================================
+   Animations
    ============================================================ */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
@@ -618,7 +754,7 @@ main {
 <body>
 
 <!-- ============================================================
-     PREMIUM + PLAYFUL MODE SELECTOR (TOP BAR)
+     Mode Selector (Top Bar)
      ============================================================ -->
 <div id="mode-selector">
   <div class="mode-card active" data-mode="grade9">
@@ -652,10 +788,10 @@ main {
 
 
 <!-- ============================================================
-     THREE-COLUMN LAYOUT
-     - Left: Instructions
-     - Middle: Available Courses
-     - Right: Pathway Blocks
+     Three-column Layout
+     Left: Instructions
+     Middle: Available Courses
+     Right: Pathway Blocks
      ============================================================ -->
 <main>
 
@@ -767,7 +903,7 @@ main {
   </section>
 
 <!-- ============================================================
-     PREVIEW OVERLAY
+     Preview Overlay
      ============================================================ -->
 <div id="preview-overlay">
   <div class="preview-panel">
@@ -795,11 +931,11 @@ main {
 
 <script>
 /* ============================================================================
-   CHUNK C — FULL JAVASCRIPT LOGIC
+   Core JavaScript Logic
    ============================================================================ */
 
 /* ============================================================
-   MODE DEFINITIONS
+   Mode definitions
    ============================================================ */
 let currentMode = "grade9";
 
@@ -811,7 +947,7 @@ const savedSelections = {
 };
 
 /* ============================================================
-   COURSE DATA BY MODE
+   Course data by mode
    ============================================================ */
 
 const grade9Cards = [
@@ -1341,7 +1477,7 @@ const iadCards = [
 ];
 
 /* ============================================================
-   BLOCK DEFINITIONS BY MODE
+   Block definitions by mode
    ============================================================ */
 const grade9Blocks = [
   { id:"g9_b1", title:"Chinese / 中文",           subtitle:"Chinese Language & Literature / 中文语言与文学",         allowed:["g9_chinese"],   theme:"red" },
@@ -1381,7 +1517,7 @@ const iadBlocks = [
 ];
 
 /* ============================================================
-   HELPERS
+   Helper functions
    ============================================================ */
 
 function getCards() {
@@ -1432,7 +1568,7 @@ function restoreSelectionsForMode(mode) {
 }
 
 /* ============================================================
-   RENDER CARDS
+   Render cards
    ============================================================ */
 function renderCards() {
   const container = document.getElementById("available-grid");
@@ -1444,12 +1580,8 @@ function renderCards() {
     div.dataset.cardId = card.id;
     div.dataset.category = card.category;
 
-    // Optional description fields for future batches
     if (card.desc_en) div.dataset.descEn = card.desc_en;
     if (card.desc_zh) div.dataset.descZh = card.desc_zh;
-
-    // Do NOT set a native title attribute, we will use our custom tooltip
-    // so that we can show full bilingual descriptions.
 
     div.innerHTML = `
       <div class="card-title">${card.title_en}</div>
@@ -1460,7 +1592,7 @@ function renderCards() {
 }
 
 /* ============================================================
-   RENDER BLOCKS
+   Render blocks
    ============================================================ */
 function renderBlocks() {
   const container = document.getElementById("blocks");
@@ -1483,7 +1615,7 @@ function renderBlocks() {
 }
 
 /* ============================================================
-   SETUP DRAG + DROP WITH VALIDATION
+   Drag and drop setup with validation
    ============================================================ */
 let currentSortables = [];
 
@@ -1540,7 +1672,7 @@ function setupDragDrop() {
 }
 
 /* ============================================================
-   MODE SWITCHING
+   Mode switching
    ============================================================ */
 function switchMode(mode) {
   // Save selections for the current mode before switching
@@ -1575,14 +1707,14 @@ function switchMode(mode) {
 }
 
 /* ============================================================
-   RESET MODE
+   Reset current mode
    ============================================================ */
 document.getElementById("reset-button").addEventListener("click", () => {
   switchMode(currentMode);
 });
 
 /* ============================================================
-   MODE CONFIGS (SHARED FOR EXPORT/PREVIEW)
+   Mode configuration (shared for export/preview)
    ============================================================ */
 const modeConfigs = [
   { key: "grade9",  label: "Grade 9",  labelZh: "九年级", blocks: grade9Blocks,  cards: grade9Cards },
@@ -1592,7 +1724,7 @@ const modeConfigs = [
 ];
 
 /* ============================================================
-   EXPORT TO CSV & PREVIEW OVERLAY
+   Export to CSV & preview overlay
    ============================================================ */
 function exportToCsv() {
   // Ensure selections are current
@@ -1780,7 +1912,7 @@ document.getElementById("preview-export").addEventListener("click", () => {
 
 
 /* ============================================================
-   CARD TOOLTIP LOGIC (HOVER DESCRIPTIONS)
+   Card tooltip logic (hover descriptions)
    ============================================================ */
 const tooltipEl = document.createElement("div");
 tooltipEl.id = "card-tooltip";
@@ -1854,7 +1986,7 @@ document.addEventListener("mousemove", (e) => {
 });
 
 /* ============================================================
-   MODE CARD CLICK HANDLERS
+   Mode card click handlers
    ============================================================ */
 document.querySelectorAll(".mode-card").forEach(card => {
   card.addEventListener("click", () => {
@@ -1863,7 +1995,7 @@ document.querySelectorAll(".mode-card").forEach(card => {
 });
 
 /* ============================================================
-   INITIALISE
+   Initialise
    ============================================================ */
 switchMode("grade9");
 </script>
