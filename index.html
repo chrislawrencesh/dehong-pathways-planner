@@ -1,0 +1,1869 @@
+<head>
+<meta charset="utf-8" />
+<title>Dehong Pathways Selector / 德闳课程路径选择器</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<style>
+/* ============================================================
+   DEHONG PREMIUM + PLAYFUL PATHWAYS DESIGN
+   ============================================================ */
+
+/* ---- BRAND COLOURS ---- */
+:root {
+  --red: #E4002B;
+  --red-soft: #FFE6EA;
+  --blue: #009ED0;
+  --blue-soft: #E6F7FC;
+  --purple: #9B0465;
+  --purple-soft: #FCE6F4;
+  --green: #97D700;
+  --green-soft: #F2FBE4;
+  --orange: #FF5100;
+  --orange-soft: #FFF0E6;
+  --yellow: #FFB900;
+  --yellow-soft: #FFF7D9;
+  --gold: #A08E00;
+  --gold-soft: #F9F5DA;
+
+  --card-radius: 20px;
+  --shadow-soft: 0 4px 14px rgba(0,0,0,0.08);
+  --shadow-lift: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+/* ---- RESET ---- */
+body {
+  margin: 0;
+  background: #151927;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: #F5F5F7;
+  min-height: 100vh;
+  overflow: auto;
+}
+
+/* ============================================================
+   THREE-COLUMN LAYOUT
+   ============================================================ */
+main {
+  display: grid;
+  grid-template-columns: 280px 1fr 1fr;
+  min-height: 100vh;
+  background: transparent;
+}
+
+/* Left = instructions */
+#instructions {
+  background: linear-gradient(180deg, #191D2A, #22263A);
+  border-right: 1px solid #2A3040;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+#instructions h2 {
+  margin: 0 0 10px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--red);
+}
+
+#instructions p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+  color: #D7DAE8;
+}
+
+#student-info {
+  margin-top: 14px;
+  margin-bottom: 16px;
+  padding: 14px 14px 12px;
+  border-radius: 18px;
+  background: radial-gradient(circle at top left, rgba(0,158,208,0.32), #151821);
+  box-shadow: 0 10px 26px rgba(0,0,0,0.65);
+  border: 1px solid #3A4A6A;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Accent strip to signal “start here” */
+#student-info::before {
+  content: "Start here / 从这里开始";
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  letter-spacing: 0.02em;
+  background: rgba(0,0,0,0.35);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #E0F4FF;
+}
+
+/* Slight glow at the bottom edge */
+#student-info::after {
+  content: "";
+  position: absolute;
+  left: 10%;
+  right: 10%;
+  bottom: -12px;
+  height: 24px;
+  background: radial-gradient(circle, rgba(0,158,208,0.45), transparent 60%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+#student-info h3 {
+  margin: 0 0 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #F5F5F7;
+}
+
+#student-info label {
+  font-size: 0.9rem;
+  color: #E0E3F0;
+}
+
+#student-info input,
+#student-info select {
+  background: #0F1118;
+  color: #F5F5F7;
+  border: 1px solid #3A3F55 !important;
+  border-radius: 8px;
+}
+
+/* ============================================================
+   MIDDLE PANEL — AVAILABLE COURSES (GRID)
+   ============================================================ */
+#available {
+  background: #1A1F30;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+#available h2 {
+  margin: 0 0 14px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #F5F5F7;
+}
+
+#available-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+/* ---- COURSE CARDS ---- */
+.card {
+  background: #151821;
+  border: 2px solid #2D3244;
+  border-radius: var(--card-radius);
+  padding: 16px;
+  cursor: grab;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  transition: 0.28s cubic-bezier(.16,1,.3,1);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: fadeIn 0.35s ease;
+  color: #F5F5F7;
+}
+
+.card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: var(--shadow-lift);
+}
+
+/* ---- Card Titles ---- */
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.card-title-zh {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* ---- Colour-coded card classes ---- */
+.card.red {
+  background: linear-gradient(145deg, #3E0613, #E4002B);
+  border-color: #E4002B;
+}
+
+.card.blue {
+  background: linear-gradient(145deg, #041E2A, #009ED0);
+  border-color: #009ED0;
+}
+
+.card.purple {
+  background: linear-gradient(145deg, #2B0420, #9B0465);
+  border-color: #9B0465;
+}
+
+.card.green {
+  background: linear-gradient(145deg, #172308, #97D700);
+  border-color: #97D700;
+}
+
+.card.orange {
+  background: linear-gradient(145deg, #2E1204, #FF5100);
+  border-color: #FF5100;
+}
+
+.card.yellow {
+  background: linear-gradient(145deg, #2C2304, #FFB900);
+  border-color: #FFB900;
+}
+
+.card.gold {
+  background: linear-gradient(145deg, #282106, #A08E00);
+  border-color: #A08E00;
+}
+
+/* ============================================================
+   RIGHT PANEL — PATHWAY BLOCKS
+   ============================================================ */
+#pathway {
+  background: #1A1F30;
+  padding: 20px;
+  border-left: 1px solid #2A3040;
+  overflow-y: auto;
+}
+
+#pathway h2 {
+  margin: 0 0 14px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #F5F5F7;
+}
+
+#blocks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+/* ---- Block ---- */
+
+.block {
+  background: #151821;
+  border: 2px dashed #3A3F55;
+  border-radius: var(--card-radius);
+  padding: 16px;
+  min-height: 140px;
+  position: relative;
+  transition: 0.3s ease;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+}
+
+.block-red {
+  border-color: var(--red);
+  background: rgba(228, 0, 43, 0.12);
+}
+
+.block-blue {
+  border-color: var(--blue);
+  background: rgba(0, 158, 208, 0.12);
+}
+
+.block-purple {
+  border-color: var(--purple);
+  background: rgba(155, 4, 101, 0.12);
+}
+
+.block-green {
+  border-color: var(--green);
+  background: rgba(151, 215, 0, 0.12);
+}
+
+.block-orange {
+  border-color: var(--orange);
+  background: rgba(255, 81, 0, 0.12);
+}
+
+.block-yellow {
+  border-color: var(--yellow);
+  background: rgba(255, 185, 0, 0.12);
+}
+
+.block-gold {
+  border-color: var(--gold);
+  background: rgba(160, 142, 0, 0.12);
+}
+
+.block.drag-over {
+  border-color: var(--red);
+  background: rgba(228,0,43,0.15);
+  box-shadow: 0 0 0 3px rgba(228,0,43,0.45);
+}
+
+/* ---- Block titles ---- */
+.block-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+  color: #F5F5F7;
+}
+
+.block-subtitle {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-bottom: 10px;
+  color: #C7CADB;
+}
+
+.placeholder {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  color: #9FA3BD;
+}
+
+/* ============================================================
+   PREMIUM + PLAYFUL MODE SELECTOR
+   ============================================================ */
+#mode-selector {
+  display: flex;
+  gap: 18px;
+  padding: 14px 20px;
+  border-bottom: 1px solid #222633;
+  background: linear-gradient(90deg, #05060A, #151827);
+}
+
+.mode-card {
+  flex: 1;
+  min-width: 180px;
+  text-align: center;
+  padding: 22px 16px;
+  border-radius: 22px;
+  background: #151821;
+  border: 1px solid #2D3244;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  cursor: pointer;
+  transition: 0.3s cubic-bezier(.16,1,.3,1);
+  position: relative;
+  overflow: hidden;
+  color: #F5F5F7;
+}
+
+.mode-card:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+}
+
+/* Mode icon with gradient text */
+.mode-icon {
+  font-size: 44px;
+  margin-bottom: 14px;
+  transition: transform 0.4s ease;
+}
+
+.mode-icon img {
+  width: 40px;
+  height: 40px;
+  display: block;
+}
+
+.mode-card:hover .mode-icon {
+  transform: scale(1.2) rotate(4deg);
+}
+
+/* Gradients */
+.mode-icon.grade9 {
+  background: linear-gradient(135deg, #E4002B 0%, #FF9AA5 100%);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.mode-icon.grade10 {
+  background: linear-gradient(135deg, #FF5100 0%, #FFB900 100%);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.mode-icon.ib {
+  background: linear-gradient(135deg, #009ED0 0%, #8FE9FF 100%);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.mode-icon.iad {
+  background: linear-gradient(135deg, #A08E00 0%, #FFE98A 100%);
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+.mode-title {
+  font-size: 1.15rem;
+  font-weight: 800;
+}
+
+.mode-subtitle {
+  font-size: 0.9rem;
+  opacity: 0.75;
+}
+
+/* Active state */
+.mode-card.active {
+  border-color: var(--red);
+  transform: scale(1.05);
+  background: radial-gradient(circle at top left, rgba(228,0,43,0.3), #151821);
+  box-shadow: 0 14px 40px rgba(228,0,43,0.6);
+}
+
+/* Ripple click */
+.mode-card:active::after {
+  content: "";
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 10px; height: 10px;
+  background: rgba(228,0,43,0.25);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: ripple 0.6s ease-out forwards;
+}
+@keyframes ripple {
+  from { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+  to { opacity: 0;   transform: translate(-50%, -50%) scale(22); }
+}
+
+#preview-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.preview-panel {
+  width: min(900px, 90vw);
+  max-height: 80vh;
+  background: #151821;
+  border-radius: 18px;
+  box-shadow: 0 18px 45px rgba(0,0,0,0.7);
+  border: 1px solid #2A3040;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.preview-header,
+.preview-footer {
+  padding: 12px 18px;
+  border-bottom: 1px solid #2A3040;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.preview-footer {
+  border-top: 1px solid #2A3040;
+  border-bottom: none;
+  justify-content: flex-end;
+}
+
+.preview-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #F5F5F7;
+}
+
+.preview-body {
+  padding: 12px 18px 16px;
+  overflow-y: auto;
+  font-size: 0.9rem;
+  color: #E0E3F0;
+}
+
+.preview-body h3 {
+  margin: 10px 0 6px;
+  font-size: 0.95rem;
+  color: #F5F5F7;
+}
+
+.preview-body p {
+  margin: 4px 0;
+}
+
+.preview-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 6px 0 12px;
+  font-size: 0.85rem;
+}
+
+.preview-table th,
+.preview-table td {
+  border: 1px solid #2A3040;
+  padding: 4px 6px;
+  text-align: left;
+}
+
+.preview-table th {
+  background: #1F2334;
+  color: #F5F5F7;
+  font-weight: 600;
+}
+
+.preview-tag-empty {
+  opacity: 0.6;
+  font-style: italic;
+}
+
+.preview-button {
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+#preview-close {
+  background: transparent;
+  color: #D7DAE8;
+  border: 1px solid #3A3F55;
+}
+
+#preview-export {
+  background: var(--red);
+  color: #FFFFFF;
+}
+
+/* =======================
+   PREVIEW ENHANCED STYLES
+   ======================= */
+.preview-mode-section {
+  margin: 10px 0 14px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: #191D2A;
+  border: 1px solid #2A3040;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.35);
+}
+
+.preview-mode-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.preview-mode-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #F5F5F7;
+}
+
+.preview-mode-chip {
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid #3A3F55;
+  background: #11131C;
+  color: #D7DAE8;
+}
+
+.preview-table tbody tr:nth-child(odd) {
+  background: #11131C;
+}
+
+.preview-table tbody tr:nth-child(even) {
+  background: #151821;
+}
+
+/* ============================================================
+   COURSE TOOLTIP
+   ============================================================ */
+#card-tooltip {
+  position: fixed;
+  max-width: 280px;
+  background: #11131C;
+  border-radius: 10px;
+  padding: 10px 12px;
+  border: 1px solid #3A3F55;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  font-size: 0.8rem;
+  color: #F5F5F7;
+  z-index: 1200;
+  display: none;
+  pointer-events: none;
+}
+
+#card-tooltip .tooltip-title {
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-size: 0.85rem;
+}
+
+#card-tooltip .tooltip-body p {
+  margin: 2px 0;
+  line-height: 1.35;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     PREMIUM + PLAYFUL MODE SELECTOR (TOP BAR)
+     ============================================================ -->
+<div id="mode-selector">
+  <div class="mode-card active" data-mode="grade9">
+    <div class="mode-icon grade9">🎒</div>
+    <div class="mode-title">Grade 9 Pathway</div>
+    <div class="mode-subtitle">九年级路径</div>
+  </div>
+
+  <div class="mode-card" data-mode="grade10">
+    <div class="mode-icon grade10">📚</div>
+    <div class="mode-title">Grade 10 Pathway</div>
+    <div class="mode-subtitle">十年级路径</div>
+  </div>
+
+  <div class="mode-card" data-mode="ibdp">
+    <div class="mode-icon ib">
+      <img src="icon-ibdp.png" alt="IBDP icon" />
+    </div>
+    <div class="mode-title">IB Diploma Preview</div>
+    <div class="mode-subtitle">IB 课程预览</div>
+  </div>
+
+  <div class="mode-card" data-mode="iad">
+    <div class="mode-icon iad">
+      <img src="icon-iad.png" alt="IAD icon" />
+    </div>
+    <div class="mode-title">IAD Preview</div>
+    <div class="mode-subtitle">国际高级文凭预览</div>
+  </div>
+</div>
+
+
+<!-- ============================================================
+     THREE-COLUMN LAYOUT
+     - Left: Instructions
+     - Middle: Available Courses
+     - Right: Pathway Blocks
+     ============================================================ -->
+<main>
+
+  <!-- LEFT COLUMN — INSTRUCTIONS -->
+  <section id="instructions">
+    <h2>Instructions / 使用说明</h2>
+    <p>1. Choose a mode (Grade 9, Grade 10, IB, or IAD). / 请选择一个模式（九年级、十年级、IB 或 IAD）。</p>
+    <p>2. Drag a coloured tile from the middle panel into a block on the right. / 将中间栏的彩色课程卡片拖到右侧的模块中。</p>
+    <p>3. Each block only accepts certain types of courses. / 每个模块只能接收指定类型的课程。</p>
+    <p>4. Drag a tile back to remove it. / 将课程卡片拖回中间栏即可移除。</p>
+    <p>5. Complete all blocks, then export your plan. / 完成所有模块后即可导出您的课程规划。</p>
+
+
+    <div style="margin-top:20px;">
+      <button id="export-button" style="
+        padding:10px 16px;
+        border-radius:10px;
+        background:var(--red);
+        color:white;
+        border:none;
+        font-size:0.9rem;
+        cursor:pointer;
+      ">
+        Export My Selections / 导出我的选择（CSV）
+      </button>
+
+      <br><br>
+
+      <button id="reset-button" style="
+        padding:10px 16px;
+        border-radius:10px;
+        background:#EEE;
+        color:#444;
+        border:1px solid #DDD;
+        font-size:0.9rem;
+        cursor:pointer;
+      ">
+        Reset Current Mode / 重置当前模式
+      </button>
+    </div>
+  </section>
+
+
+  <!-- MIDDLE COLUMN — AVAILABLE COURSES (GRID) -->
+  <section id="available">
+    <h2 id="available-title">Available Courses / 可选课程</h2>
+    <div id="student-info">
+      <h3>Student Information / 学生信息</h3>
+
+      <label for="student-ename">
+        English Name / 英文姓名
+        <br />
+        <input
+          id="student-ename"
+          type="text"
+          style="width:100%;padding:6px 8px;border-radius:8px;border:1px solid #DDD;margin-top:4px;"
+        />
+      </label>
+      <br /><br />
+
+      <label for="student-cname">
+        Chinese Name / 中文姓名
+        <br />
+        <input
+          id="student-cname"
+          type="text"
+          style="width:100%;padding:6px 8px;border-radius:8px;border:1px solid #DDD;margin-top:4px;"
+        />
+      </label>
+      <br /><br />
+
+      <label for="student-grade">
+        Current Grade / 当前年级
+        <br />
+        <input
+          id="student-grade"
+          type="text"
+          placeholder="e.g. G8, G9"
+          style="width:100%;padding:6px 8px;border-radius:8px;border:1px solid #DDD;margin-top:4px;"
+        />
+      </label>
+      <br /><br />
+
+      <label for="student-existing">
+        Existing Dehong Student? / 是否为在读德闳学生？
+        <br />
+        <select
+          id="student-existing"
+          style="width:100%;padding:6px 8px;border-radius:8px;border:1px solid #DDD;margin-top:4px;"
+        >
+          <option value="">-- Please select / 请选择 --</option>
+          <option value="Yes">Yes / 是</option>
+          <option value="No">No / 否</option>
+        </select>
+      </label>
+    </div>
+    <div id="available-grid">
+      <!-- JS will dynamically inject cards for Grade 9 / IB / IAD -->
+    </div>
+  </section>
+
+
+  <!-- RIGHT COLUMN — PATHWAY BLOCKS -->
+  <section id="pathway">
+    <h2 id="pathway-title">My Grade 9 Pathway / 我的九年级学习路径</h2>
+    <div id="blocks">
+      <!-- JS will dynamically inject Grade 9 / IB / IAD blocks -->
+    </div>
+  </section>
+
+<!-- ============================================================
+     PREVIEW OVERLAY
+     ============================================================ -->
+<div id="preview-overlay">
+  <div class="preview-panel">
+    <div class="preview-header">
+      <div class="preview-title">Preview My Plan / 预览我的课程规划</div>
+      <button id="preview-close" class="preview-button">
+        Close / 返回
+      </button>
+    </div>
+    <div id="preview-body" class="preview-body">
+      <!-- JS will populate preview content -->
+    </div>
+    <div class="preview-footer">
+      <button id="preview-export" class="preview-button">
+        Confirm Export (CSV) / 确认导出（CSV）
+      </button>
+    </div>
+  </div>
+</div>
+
+</main>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+
+<script>
+/* ============================================================================
+   CHUNK C — FULL JAVASCRIPT LOGIC
+   ============================================================================ */
+
+/* ============================================================
+   MODE DEFINITIONS
+   ============================================================ */
+let currentMode = "grade9";
+
+const savedSelections = {
+  grade9: {},
+  grade10: {},
+  ibdp: {},
+  iad: {}
+};
+
+/* ============================================================
+   COURSE DATA BY MODE
+   ============================================================ */
+
+const grade9Cards = [
+  {
+    id:"g9_chi_ll",
+    title_en:"Chinese Language & Literature",
+    title_zh:"中文语言与文学",
+    category:"g9_chinese",
+    color:"red",
+    desc_en:"Builds accurate reading, writing and speaking in Chinese through modern and classical texts, preparing students for advanced bilingual study.",
+    desc_zh:"通过学习现代与经典文本，提高学生的中文阅读、写作与口语表达能力，为后续更高阶段的双语学习打下基础。"
+  },
+  {
+    id:"g9_engA",
+    title_en:"English A: Lang & Lit",
+    title_zh:"英语A：语言与文学",
+    category:"g9_english",
+    color:"blue",
+    desc_en:"Introduces IB-style language and literature skills, analysing fiction and non-fiction while building strong academic English writing and discussion.",
+    desc_zh:"以IB风格的语言与文学学习为导向，通过分析文学与非文学文本，提升学生的英语学术写作与课堂讨论能力。"
+  },
+  {
+    id:"g9_engB",
+    title_en:"English B (Acquisition)",
+    title_zh:"英语B：语言习得",
+    category:"g9_english",
+    color:"blue",
+    desc_en:"Strengthens core grammar, vocabulary and communication for learners who need more support in everyday and academic English.",
+    desc_zh:"为需要更多语言支持的学生夯实语法和词汇基础，提升在日常与学术情境中的英语沟通能力。"
+  },
+  {
+    id:"g9_eng_enh",
+    title_en:"Enhanced English",
+    title_zh:"英语强化",
+    category:"g9_english",
+    color:"blue",
+    desc_en:"Provides extra challenge in reading, writing and speaking to stretch confident English users towards higher-level pathways.",
+    desc_zh:"为英语基础较好的学生提供更具挑战性的阅读、写作与口语训练，帮助他们衔接更高阶的学习路径。"
+  },
+
+  {
+    id:"g9_math_h",
+    title_en:"Mathematics Higher",
+    title_zh:"高阶数学",
+    category:"g9_math",
+    color:"purple",
+    desc_en:"Explores algebra, functions and problem-solving in greater depth, preparing students for advanced mathematics options.",
+    desc_zh:"在代数、函数与问题解决等方面进行更深入的学习，为后续选择高阶数学课程做好准备。"
+  },
+  {
+    id:"g9_math_s",
+    title_en:"Mathematics Standard",
+    title_zh:"标准数学",
+    category:"g9_math",
+    color:"purple",
+    desc_en:"Consolidates key number, algebra and graphing skills needed for science, business and humanities pathways.",
+    desc_zh:"巩固数与代数、图像等核心数学技能，支持未来在科学、商科与人文学科等不同路径的发展。"
+  },
+
+  {
+    id:"g9_phys",
+    title_en:"Physics",
+    title_zh:"物理",
+    category:"g9_science_p",
+    color:"green",
+    desc_en:"Introduces motion, forces, energy and waves, building experimental and analytical skills for further physics study.",
+    desc_zh:"通过学习运动、力、能量与波等主题，培养学生的实验探究与数据分析能力，为后续物理学习奠定基础。"
+  },
+  {
+    id:"g9_bio",
+    title_en:"Biology",
+    title_zh:"生物",
+    category:"g9_science_p",
+    color:"green",
+    desc_en:"Explores cells, body systems and ecosystems, helping students understand living organisms from micro to macro level.",
+    desc_zh:"从细胞、人体系统到生态系统多个层面，帮助学生理解生命现象与生命系统的基本原理。"
+  },
+
+  {
+    id:"g9_chem",
+    title_en:"Chemistry",
+    title_zh:"化学",
+    category:"g9_science_s",
+    color:"orange",
+    desc_en:"Covers particles, reactions and the periodic table while developing practical skills in planning and evaluating experiments.",
+    desc_zh:"学习微粒、化学反应与元素周期表等核心概念，并发展设计实验与评估结果的实践能力。"
+  },
+  {
+    id:"g9_health",
+    title_en:"Health Science",
+    title_zh:"健康科学",
+    category:"g9_science_s",
+    color:"orange",
+    desc_en:"Connects biology with real-life health topics such as lifestyle, disease prevention and wellbeing.",
+    desc_zh:"将生物学知识与生活中的健康议题相联系，关注生活方式、疾病预防与身心健康。"
+  },
+
+  {
+    id:"g9_music",
+    title_en:"Music",
+    title_zh:"音乐",
+    category:"g9_arts_hum",
+    color:"yellow",
+    desc_en:"Develops listening, performance and basic composition skills across different musical styles and cultures.",
+    desc_zh:"通过欣赏、表演与基础创作，体验不同风格与文化的音乐，提升音乐素养与表现力。"
+  },
+  {
+    id:"g9_gp",
+    title_en:"Global Perspectives",
+    title_zh:"全球视野",
+    category:"g9_arts_hum",
+    color:"yellow",
+    desc_en:"Encourages critical thinking about global issues, helping students research, collaborate and communicate informed viewpoints.",
+    desc_zh:"围绕全球性议题培养批判性思维，引导学生开展探究、合作并表达有依据的观点。"
+  },
+
+  {
+    id:"g9_art",
+    title_en:"Art",
+    title_zh:"艺术",
+    category:"g9_arts_des",
+    color:"yellow",
+    desc_en:"Explores drawing, painting and mixed media, building confidence in visual expression and creative thinking.",
+    desc_zh:"通过素描、绘画与综合材料创作，培养学生的视觉表达能力与创造性思维。"
+  },
+  {
+    id:"g9_design",
+    title_en:"Design Thinking",
+    title_zh:"设计思维",
+    category:"g9_arts_des",
+    color:"yellow",
+    desc_en:"Uses a human-centred design cycle to solve real problems, combining creativity, prototyping and reflection.",
+    desc_zh:"以以人为本的设计流程解决真实问题，融合创意构思、原型制作与反思改进。"
+  },
+
+  {
+    id:"g9_slead",
+    title_en:"Sports Leadership",
+    title_zh:"体育领导力",
+    category:"g9_personal",
+    color:"gold",
+    desc_en:"Builds leadership through coaching, teamwork and event roles in sport and physical wellbeing contexts.",
+    desc_zh:"在体育与身心健康活动中，通过带队、协作与组织实践提升学生的领导力与责任感。"
+  },
+  {
+    id:"g9_envlead",
+    title_en:"Environmental Leadership",
+    title_zh:"环境领导力",
+    category:"g9_personal",
+    color:"gold",
+    desc_en:"Focuses on sustainability projects and advocacy, helping students lead positive change for the environment.",
+    desc_zh:"围绕可持续发展项目与倡导行动，培养学生在环境保护方面的行动力与领导力。"
+  },
+  {
+    id:"g9_stemlead",
+    title_en:"STEM Leadership",
+    title_zh:"STEM领导力",
+    category:"g9_personal",
+    color:"gold",
+    desc_en:"Combines science, technology and problem-solving challenges to develop innovation and collaborative project skills.",
+    desc_zh:"通过科学与技术相关的挑战与项目，发展学生的创新能力与团队项目管理能力。"
+  }
+];
+
+const grade10Cards = [
+  {
+    id:"g10_chi_ll",
+    title_en:"Chinese Language & Literature",
+    title_zh:"中文语言与文学",
+    category:"g10_chinese",
+    color:"red",
+    desc_en:"Deepens analytical reading and writing in Chinese through a wider range of literary and non-literary texts, preparing students for upper-secondary Chinese pathways.",
+    desc_zh:"通过更广泛的文学与非文学文本训练中文阅读与写作分析能力，为后续高中阶段的中文学习做好衔接。"
+  },
+  {
+    id:"g10_eng_ll",
+    title_en:"English Language & Literature",
+    title_zh:"英语语言与文学",
+    category:"g10_english",
+    color:"blue",
+    desc_en:"Develops close reading, textual analysis and academic writing in English, building strong foundations for IB or IAD English courses.",
+    desc_zh:"通过精读、文本分析与学术写作训练，系统提升学生的英语语言与文学能力，为IB或IAD阶段的英语课程打下基础。"
+  },
+  {
+    id:"g10_eng_enh",
+    title_en:"Enhanced English",
+    title_zh:"英语强化",
+    category:"g10_english",
+    color:"blue",
+    desc_en:"Provides additional challenge in vocabulary, structure and extended writing for students aiming for higher-level English pathways.",
+    desc_zh:"在词汇、语法结构与长篇写作方面提供更高挑战，适合希望在高中阶段选择更高阶英语路径的学生。"
+  },
+
+  {
+    id:"g10_math_core",
+    title_en:"Core Mathematics",
+    title_zh:"核心数学",
+    category:"g10_math",
+    color:"purple",
+    desc_en:"Consolidates key algebra, geometry and data skills needed for a wide range of IB and IAD subjects.",
+    desc_zh:"巩固代数、几何与数据处理等核心技能，为多种IB与IAD科目提供数学支撑。"
+  },
+  {
+    id:"g10_math_ext",
+    title_en:"Extended Mathematics",
+    title_zh:"扩展数学",
+    category:"g10_math",
+    color:"purple",
+    desc_en:"Extends core content with more demanding algebra, functions and problem-solving for students considering higher-level mathematics.",
+    desc_zh:"在核心内容基础上增加更具难度的代数、函数与问题解决练习，适合未来考虑高阶数学课程的学生。"
+  },
+
+  {
+    id:"g10_sci_phys",
+    title_en:"Physics",
+    title_zh:"物理",
+    category:"g10_science",
+    color:"green",
+    desc_en:"Continues the study of motion, forces, energy and electricity with a stronger focus on experimental design and data analysis.",
+    desc_zh:"在运动、力、能量与电学等主题上进一步深入学习，更注重实验设计与数据分析能力的培养。"
+  },
+  {
+    id:"g10_sci_chem",
+    title_en:"Chemistry",
+    title_zh:"化学",
+    category:"g10_science",
+    color:"orange",
+    desc_en:"Builds understanding of structure, bonding and chemical change while practising safe, accurate laboratory work.",
+    desc_zh:"围绕物质结构、化学键与化学变化等核心概念展开学习，并通过实验操作加强安全规范与数据准确性。"
+  },
+  {
+    id:"g10_sci_bio",
+    title_en:"Biology",
+    title_zh:"生物",
+    category:"g10_science",
+    color:"green",
+    desc_en:"Explores genetics, homeostasis and ecology, strengthening scientific writing and practical skills for further biology study.",
+    desc_zh:"学习遗传、内环境稳定与生态学等主题，提升科学写作与实验实践能力，为后续生物课程打好基础。"
+  },
+
+  {
+    id:"g10_hum_hist",
+    title_en:"History",
+    title_zh:"历史",
+    category:"g10_hum",
+    color:"yellow",
+    desc_en:"Uses case studies from different periods to build source evaluation, essay planning and critical thinking skills.",
+    desc_zh:"通过不同时期的历史案例训练学生解读史料、组织论证与批判性思维能力。"
+  },
+  {
+    id:"g10_hum_geo",
+    title_en:"Geography",
+    title_zh:"地理",
+    category:"g10_hum",
+    color:"yellow",
+    desc_en:"Examines people–environment interactions, urbanisation and development, connecting map skills with real-world issues.",
+    desc_zh:"围绕人地关系、城市化与发展等议题展开学习，将地图技能与真实世界问题紧密结合。"
+  },
+
+  {
+    id:"g10_art",
+    title_en:"Art & Design",
+    title_zh:"艺术与设计",
+    category:"g10_art",
+    color:"yellow",
+    desc_en:"Develops a personal portfolio through drawing, mixed media and design projects, encouraging experimentation and reflection.",
+    desc_zh:"通过绘画、综合材料与设计项目创作个人作品集，鼓励学生勇于尝试并进行自我反思。"
+  },
+  {
+    id:"g10_music",
+    title_en:"Music",
+    title_zh:"音乐",
+    category:"g10_art",
+    color:"yellow",
+    desc_en:"Combines performance, listening and basic composition to deepen musical understanding across genres.",
+    desc_zh:"在表演、欣赏与基础创作中体验多种风格音乐，加深对音乐结构与表达方式的理解。"
+  },
+
+  {
+    id:"g10_pe",
+    title_en:"Sport & Wellbeing",
+    title_zh:"体育与身心健康",
+    category:"g10_core",
+    color:"gold",
+    desc_en:"Promotes physical fitness, teamwork and healthy habits through a range of individual and team activities.",
+    desc_zh:"通过多种个人与团队运动促进体能发展、团队合作与健康生活习惯的养成。"
+  },
+  {
+    id:"g10_qidi",
+    title_en:"Qidi / Signature Course",
+    title_zh:"启迪课 / 特色课程",
+    category:"g10_core",
+    color:"gold",
+    desc_en:"Offers an interdisciplinary, project-based experience that connects real-world questions with future pathways.",
+    desc_zh:"以跨学科、项目式学习为特色，将真实世界问题与未来学习与发展路径相连接。"
+  }
+];
+
+const ibdpCards = [
+  {
+    id:"ib_langA_eng",
+    title_en:"English A: Lang & Lit HL",
+    title_zh:"英语A 语言与文学 高水",
+    category:"ib_langA",
+    color:"red",
+    desc_en:"Develops advanced literary and language analysis in English through a wide range of texts, preparing students for essay-based study at university.",
+    desc_zh:"通过研读多种体裁的英语文本，系统训练文学与语言分析能力，为大学阶段以论文为主的学习做好准备。"
+  },
+  {
+    id:"ib_langA_chi",
+    title_en:"Chinese A HL",
+    title_zh:"中文A 高水",
+    category:"ib_langA",
+    color:"red",
+    desc_en:"Strengthens critical reading and refined writing in Chinese, focusing on how authors use language to shape ideas, culture and identity.",
+    desc_zh:"在深入阅读中文作品的基础上，提升批判性阅读与高级写作能力，关注作者如何通过语言呈现思想、文化与身份。"
+  },
+
+  {
+    id:"ib_langB_eng",
+    title_en:"English B HL",
+    title_zh:"英语B 高水",
+    category:"ib_langB",
+    color:"blue",
+    desc_en:"Builds high-level communicative and academic English for students who learn English as an additional language, with an emphasis on global topics.",
+    desc_zh:"为将英语作为第二语言的学生提升高阶沟通与学术英语能力，围绕多元全球议题进行语言运用与表达。"
+  },
+  {
+    id:"ib_langB_chi",
+    title_en:"Chinese B SL",
+    title_zh:"中文B 标水",
+    category:"ib_langB",
+    color:"blue",
+    desc_en:"Consolidates Chinese language skills for learners who are not native speakers, focusing on real-life situations and intercultural understanding.",
+    desc_zh:"面向非母语学习者，巩固中文听说读写能力，强调真实情境下的交流与跨文化理解。"
+  },
+
+  {
+    id:"ib_econ",
+    title_en:"Economics HL",
+    title_zh:"经济学 高水",
+    category:"ib_soc",
+    color:"yellow",
+    desc_en:"Explores micro, macro and global economics, helping students apply economic concepts to real policy questions and everyday decisions.",
+    desc_zh:"从微观、宏观与全球视角探讨经济学概念，引导学生将理论应用于实际政策问题与生活决策。"
+  },
+  {
+    id:"ib_psych",
+    title_en:"Psychology SL",
+    title_zh:"心理学 标水",
+    category:"ib_soc",
+    color:"yellow",
+    desc_en:"Introduces key psychological theories and research methods to explain how thinking, behaviour and emotions are shaped.",
+    desc_zh:"介绍核心心理学理论与研究方法，帮助学生理解人类思维、行为与情绪形成的原因。"
+  },
+
+  {
+    id:"ib_bio",
+    title_en:"Biology HL",
+    title_zh:"生物 高水",
+    category:"ib_sci",
+    color:"green",
+    desc_en:"Studies living systems from cells to ecosystems with a strong focus on practical work, data analysis and scientific writing.",
+    desc_zh:"从细胞到生态系统多个层面研究生命系统，强调实验实践、数据分析与科学写作能力。"
+  },
+  {
+    id:"ib_phys",
+    title_en:"Physics HL",
+    title_zh:"物理 高水",
+    category:"ib_sci",
+    color:"green",
+    desc_en:"Covers mechanics, energy, fields and modern physics, developing strong mathematical modelling and problem-solving skills.",
+    desc_zh:"学习力学、能量、场与近代物理等内容，培养扎实的数学建模与物理问题解决能力。"
+  },
+
+  {
+    id:"ib_math_aa",
+    title_en:"Math AA HL",
+    title_zh:"数学AA 高水",
+    category:"ib_math",
+    color:"purple",
+    desc_en:"Focuses on pure mathematics and rigorous problem solving, ideal for students considering mathematically intensive university courses.",
+    desc_zh:"强调纯数学内容与严谨的解题过程，适合未来计划攻读数学密集型大学专业的学生。"
+  },
+  {
+    id:"ib_math_ai",
+    title_en:"Math AI SL",
+    title_zh:"数学AI 标水",
+    category:"ib_math",
+    color:"purple",
+    desc_en:"Applies mathematics to real data and everyday contexts, supporting pathways in social sciences, business and interdisciplinary fields.",
+    desc_zh:"侧重将数学应用于真实数据与生活情境，支持未来在社会科学、商科与跨学科领域的发展。"
+  },
+
+  {
+    id:"ib_va",
+    title_en:"Visual Arts SL",
+    title_zh:"视觉艺术 标水",
+    category:"ib_elec",
+    color:"orange",
+    desc_en:"Encourages personal artistic inquiry through studio work and a process portfolio, connecting practical skills with critical reflection.",
+    desc_zh:"通过创作实践与过程作品集鼓励学生开展个人艺术探究，将技法训练与批判性反思相结合。"
+  },
+  {
+    id:"ib_second",
+    title_en:"Second Science / SocSci",
+    title_zh:"第二门科学或社科",
+    category:"ib_elec",
+    color:"orange",
+    desc_en:"Allows students to deepen either a second experimental science or another individuals-and-societies subject to balance their IB profile.",
+    desc_zh:"为学生提供选择第二门实验科学或另一门个体与社会学科的机会，使整体IB课程组合更加均衡。"
+  }
+];
+
+const iadCards = [
+  {
+    id:"iad_eng",
+    title_en:"Cambridge English",
+    title_zh:"剑桥英语",
+    category:"iad_1",
+    color:"blue",
+    desc_en:"Develops advanced reading, writing, listening and speaking skills in English with a focus on academic accuracy and examination techniques.",
+    desc_zh:"通过系统训练英语听、说、读、写能力，强化学术表达与考试技巧，为后续大学申请做好语言准备。"
+  },
+  {
+    id:"iad_chi",
+    title_en:"Chinese A-Level",
+    title_zh:"中文A-Level",
+    category:"iad_1",
+    color:"red",
+    desc_en:"Builds high-level Chinese language, literature and cultural understanding, supporting students who wish to keep strong links to Chinese studies.",
+    desc_zh:"在语言、文学与文化三个层面深化中文能力，适合希望保持并发展扎实中文素养的学生。"
+  },
+  {
+    id:"iad_epq",
+    title_en:"EPQ Project",
+    title_zh:"EPQ项目",
+    category:"iad_1",
+    color:"gold",
+    desc_en:"Offers an extended independent research project where students design a question, carry out research and present their findings in depth.",
+    desc_zh:"通过自主确定研究问题、收集资料与撰写报告，培养学生的独立研究能力与学术表达能力。"
+  },
+
+  {
+    id:"iad_bus",
+    title_en:"Business",
+    title_zh:"商业",
+    category:"iad_2",
+    color:"yellow",
+    desc_en:"Introduces core concepts such as marketing, finance, operations and people management, linking theory to real business cases.",
+    desc_zh:"围绕市场营销、财务、运营与人员管理等核心概念展开学习，并结合真实商业案例理解理论的实际应用。"
+  },
+  {
+    id:"iad_bio",
+    title_en:"Biology",
+    title_zh:"生物",
+    category:"iad_2",
+    color:"green",
+    desc_en:"Explores cell biology, physiology, genetics and ecology while strengthening experimental design and scientific writing.",
+    desc_zh:"学习细胞、生理、遗传与生态等主题，并通过实验设计与科学写作提升生物学实践能力。"
+  },
+  {
+    id:"iad_media",
+    title_en:"Digital Media",
+    title_zh:"数字媒体",
+    category:"iad_2",
+    color:"orange",
+    desc_en:"Combines creative design with digital tools to produce media products such as video, graphics and online content.",
+    desc_zh:"结合创意设计与数字工具，完成视频、图像与线上内容等多种媒体作品，理解现代传播方式。"
+  },
+
+  {
+    id:"iad_phys",
+    title_en:"Physics",
+    title_zh:"物理",
+    category:"iad_3",
+    color:"green",
+    desc_en:"Covers motion, forces, electricity and waves, using experiments and mathematical models to explain the physical world.",
+    desc_zh:"学习运动、力学、电学与波动等内容，通过实验与数学建模解释物理现象。"
+  },
+  {
+    id:"iad_math",
+    title_en:"Mathematics",
+    title_zh:"数学",
+    category:"iad_3",
+    color:"purple",
+    desc_en:"Develops algebra, calculus and data-handling skills that support science, engineering, business and social science pathways.",
+    desc_zh:"系统提升代数、微积分与数据处理能力，为未来在理工科、商科与社会科学等领域学习提供数学基础。"
+  },
+  {
+    id:"iad_music",
+    title_en:"Music",
+    title_zh:"音乐",
+    category:"iad_3",
+    color:"yellow",
+    desc_en:"Combines performance, analysis and composition, encouraging students to develop their own musical voice across styles.",
+    desc_zh:"通过表演、分析与创作等学习活动，鼓励学生在不同风格中形成个人的音乐表达。"
+  },
+
+  {
+    id:"iad_chem",
+    title_en:"Chemistry",
+    title_zh:"化学",
+    category:"iad_4",
+    color:"orange",
+    desc_en:"Focuses on atomic structure, bonding, energetics and reaction rates, with regular laboratory work to build practical skills.",
+    desc_zh:"重点学习原子结构、化学键、能量变化与反应速率等内容，并通过实验训练提升化学实践能力。"
+  },
+  {
+    id:"iad_math2",
+    title_en:"Further Maths",
+    title_zh:"进阶数学",
+    category:"iad_4",
+    color:"purple",
+    desc_en:"Extends mathematics into more advanced topics such as complex numbers and matrices, ideal for students aiming at highly quantitative degrees.",
+    desc_zh:"在核心数学基础上拓展至复数、矩阵等高阶内容，适合计划攻读高度量化专业的学生。"
+  },
+  {
+    id:"iad_va",
+    title_en:"Visual Arts",
+    title_zh:"视觉艺术",
+    category:"iad_4",
+    color:"yellow",
+    desc_en:"Develops a personal art portfolio through drawing, painting and mixed media, emphasising idea development and reflection.",
+    desc_zh:"通过素描、绘画与综合材料创作个人作品集，重视创意构思过程与自我反思。"
+  }
+];
+
+/* ============================================================
+   BLOCK DEFINITIONS BY MODE
+   ============================================================ */
+const grade9Blocks = [
+  { id:"g9_b1", title:"Chinese / 中文",           subtitle:"Chinese Language & Literature / 中文语言与文学",         allowed:["g9_chinese"],   theme:"red" },
+  { id:"g9_b2", title:"English / 英语",           subtitle:"English A/B/Enhanced / 英语A/B 或英语强化",             allowed:["g9_english"],   theme:"blue" },
+  { id:"g9_b3", title:"Mathematics / 数学",       subtitle:"Higher or Standard / 高阶或标准数学",                   allowed:["g9_math"],      theme:"purple" },
+  { id:"g9_b4", title:"Science / 科学",           subtitle:"Physics or Biology / 物理或生物",                       allowed:["g9_science_p"], theme:"green" },
+  { id:"g9_b5", title:"Science / 科学",           subtitle:"Chemistry or Health Science / 化学或健康科学",          allowed:["g9_science_s"], theme:"orange" },
+  { id:"g9_b6", title:"Arts & Humanities / 艺术与人文", subtitle:"Music or Global Perspectives / 音乐或全球视野",   allowed:["g9_arts_hum"],  theme:"yellow" },
+  { id:"g9_b7", title:"Arts & Design / 艺术与设计", subtitle:"Art or Design Thinking / 艺术或设计思维",            allowed:["g9_arts_des"],  theme:"yellow" },
+  { id:"g9_b8", title:"Personalised / 个性化",    subtitle:"Leadership credential / 领导力项目",                   allowed:["g9_personal"],  theme:"gold" }
+];
+
+const grade10Blocks = [
+  { id:"g10_b1", title:"Chinese / 中文",          subtitle:"Core Chinese Language & Literature / 中文语言与文学（核心）",   allowed:["g10_chinese"], theme:"red" },
+  { id:"g10_b2", title:"English / 英语",          subtitle:"Language & Literature / Enhanced / 语言与文学或英语强化",      allowed:["g10_english"], theme:"blue" },
+  { id:"g10_b3", title:"Mathematics / 数学",      subtitle:"Core or Extended Mathematics / 核心或扩展数学",                allowed:["g10_math"],    theme:"purple" },
+  { id:"g10_b4", title:"Sciences / 科学",         subtitle:"Physics / Chemistry / Biology / 物理、化学或生物",             allowed:["g10_science"], theme:"green" },
+  { id:"g10_b5", title:"Humanities / 人文学科",   subtitle:"History or Geography / 历史或地理",                          allowed:["g10_hum"],     theme:"yellow" },
+  { id:"g10_b6", title:"Arts / 艺术",             subtitle:"Art & Design / Music / 艺术与设计或音乐",                    allowed:["g10_art"],     theme:"yellow" },
+  { id:"g10_b7", title:"Core Curriculum / 核心课程", subtitle:"Sport, Wellbeing, or Qidi / 体育、身心健康或启迪课",       allowed:["g10_core"],    theme:"gold" }
+];
+
+const ibBlocks = [
+  { id:"ib_b1", title:"Language A / 语言A",                 subtitle:"English A or Chinese A / 英语A 或中文A",                  allowed:["ib_langA"], theme:"red" },
+  { id:"ib_b2", title:"Language B / 语言B",                 subtitle:"English B or Chinese B / 英语B 或中文B",                  allowed:["ib_langB"], theme:"blue" },
+  { id:"ib_b3", title:"Individuals & Societies / 个体与社会", subtitle:"Economics / Psychology / 经济学或心理学",              allowed:["ib_soc"],   theme:"yellow" },
+  { id:"ib_b4", title:"Sciences / 科学",                   subtitle:"Biology / Physics / 生物或物理",                            allowed:["ib_sci"],   theme:"green" },
+  { id:"ib_b5", title:"Mathematics / 数学",                subtitle:"AA or AI / 数学AA 或数学AI",                               allowed:["ib_math"],  theme:"purple" },
+  { id:"ib_b6", title:"Arts / Elective / 艺术或选修",       subtitle:"Visual Arts or second science/soc sci / 视觉艺术或第二门科学/社科", allowed:["ib_elec"], theme:"orange" }
+];
+
+const iadBlocks = [
+  { id:"iad_b1", title:"Block 1 / 模块 1", subtitle:"English / Chinese / EPQ / 英语、中文或EPQ项目",           allowed:["iad_1"], theme:"blue" },
+  { id:"iad_b2", title:"Block 2 / 模块 2", subtitle:"Business / Biology / Media / 商业、生物或数字媒体",       allowed:["iad_2"], theme:"yellow" },
+  { id:"iad_b3", title:"Block 3 / 模块 3", subtitle:"Physics / Math / Music / 物理、数学或音乐",              allowed:["iad_3"], theme:"purple" },
+  { id:"iad_b4", title:"Block 4 / 模块 4", subtitle:"Chemistry / Further Math / Art / 化学、进阶数学或艺术",  allowed:["iad_4"], theme:"orange" }
+];
+
+/* ============================================================
+   HELPERS
+   ============================================================ */
+
+function getCards() {
+  return currentMode === "grade9" ? grade9Cards :
+         currentMode === "grade10" ? grade10Cards :
+         currentMode === "ibdp"   ? ibdpCards :
+         iadCards;
+}
+
+function getBlocks() {
+  return currentMode === "grade9" ? grade9Blocks :
+         currentMode === "grade10" ? grade10Blocks :
+         currentMode === "ibdp"   ? ibBlocks :
+         iadBlocks;
+}
+
+function captureCurrentSelections() {
+  const map = savedSelections[currentMode];
+  if (!map) return;
+
+  // Clear existing stored selections for this mode
+  Object.keys(map).forEach(k => delete map[k]);
+
+  // Read current DOM blocks and store card selections
+  document.querySelectorAll(".block").forEach(blockEl => {
+    const blockId = blockEl.dataset.blockId;
+    const cardEl = blockEl.querySelector(".card");
+    if (blockId && cardEl) {
+      map[blockId] = cardEl.dataset.cardId;
+    }
+  });
+}
+
+function restoreSelectionsForMode(mode) {
+  const map = savedSelections[mode];
+  if (!map) return;
+
+  Object.keys(map).forEach(blockId => {
+    const cardId = map[blockId];
+    const cardEl = document.querySelector(`#available-grid .card[data-card-id="${cardId}"]`);
+    const blockEl = document.querySelector(`.block[data-block-id="${blockId}"]`);
+    if (cardEl && blockEl) {
+      const ph = blockEl.querySelector(".placeholder");
+      if (ph) ph.remove();
+      blockEl.appendChild(cardEl);
+    }
+  });
+}
+
+/* ============================================================
+   RENDER CARDS
+   ============================================================ */
+function renderCards() {
+  const container = document.getElementById("available-grid");
+  container.innerHTML = "";
+
+  getCards().forEach(card => {
+    const div = document.createElement("div");
+    div.className = `card ${card.color}`;
+    div.dataset.cardId = card.id;
+    div.dataset.category = card.category;
+
+    // Optional description fields for future batches
+    if (card.desc_en) div.dataset.descEn = card.desc_en;
+    if (card.desc_zh) div.dataset.descZh = card.desc_zh;
+
+    // Do NOT set a native title attribute, we will use our custom tooltip
+    // so that we can show full bilingual descriptions.
+
+    div.innerHTML = `
+      <div class="card-title">${card.title_en}</div>
+      <div class="card-title-zh">${card.title_zh}</div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+/* ============================================================
+   RENDER BLOCKS
+   ============================================================ */
+function renderBlocks() {
+  const container = document.getElementById("blocks");
+  container.innerHTML = "";
+
+  getBlocks().forEach(block => {
+    const wrap = document.createElement("div");
+    wrap.className = "block" + (block.theme ? ` block-${block.theme}` : "");
+    wrap.dataset.blockId = block.id;
+    wrap.dataset.allowed = block.allowed.join(",");
+
+    wrap.innerHTML = `
+      <div class="block-title">${block.title}</div>
+      <div class="block-subtitle">${block.subtitle}</div>
+      <div class="placeholder">Drag course here / 请将课程拖到此处</div>
+    `;
+
+    container.appendChild(wrap);
+  });
+}
+
+/* ============================================================
+   SETUP DRAG + DROP WITH VALIDATION
+   ============================================================ */
+let currentSortables = [];
+
+function setupDragDrop() {
+  currentSortables.forEach(s => s.destroy());
+  currentSortables = [];
+
+  /* Available area */
+  currentSortables.push(new Sortable(document.getElementById("available-grid"), {
+    group: { name:"courses", pull:true, put:true },
+    sort: false,
+    animation: 150
+  }));
+
+  /* Blocks */
+  document.querySelectorAll(".block").forEach(block => {
+    const s = new Sortable(block, {
+      group: { name:"courses", pull:true, put:true },
+      sort: false,
+      animation: 150,
+
+      onAdd(evt) {
+        const item = evt.item;
+        const cardCat = item.dataset.category;
+        const allowed = block.dataset.allowed.split(",");
+
+        if (!allowed.includes(cardCat)) {
+          alert("This course cannot be placed in this block. / 此课程不能放在此模块中。");
+          block.removeChild(item);
+          document.getElementById("available-grid").appendChild(item);
+          return;
+        }
+
+        /* remove placeholder */
+        const ph = block.querySelector(".placeholder");
+        if (ph) ph.remove();
+
+        /* enforce one card per block */
+        [...block.querySelectorAll(".card")].slice(0, -1).forEach(old => {
+          block.removeChild(old);
+          document.getElementById("available-grid").appendChild(old);
+        });
+      },
+
+      onRemove(evt) {
+        if (!block.querySelector(".card")) {
+          block.innerHTML += `<div class="placeholder">Drag course here / 请将课程拖到此处</div>`;
+        }
+      }
+    });
+
+    currentSortables.push(s);
+  });
+}
+
+/* ============================================================
+   MODE SWITCHING
+   ============================================================ */
+function switchMode(mode) {
+  // Save selections for the current mode before switching
+  captureCurrentSelections();
+
+  currentMode = mode;
+
+  /* Update UI text */
+  document.getElementById("available-title").textContent =
+    mode === "grade9"  ? "Available Grade 9 Courses / 九年级可选课程"  :
+    mode === "grade10" ? "Available Grade 10 Courses / 十年级可选课程" :
+    mode === "ibdp"    ? "IBDP Subjects / IBDP 课程"                 :
+                         "IAD Subjects / IAD 课程";
+
+  document.getElementById("pathway-title").textContent =
+    mode === "grade9"  ? "My Grade 9 Pathway / 我的九年级学习路径"   :
+    mode === "grade10" ? "My Grade 10 Pathway / 我的十年级学习路径"  :
+    mode === "ibdp"    ? "My IBDP Preview / 我的IBDP课程预览"       :
+                         "My IAD Preview / 我的IAD课程预览";
+
+  /* Update active mode card */
+  document.querySelectorAll(".mode-card").forEach(c => c.classList.remove("active"));
+  document.querySelector(`.mode-card[data-mode="${mode}"]`).classList.add("active");
+
+  renderCards();
+  renderBlocks();
+
+  // Restore selections (if any) for the newly selected mode
+  restoreSelectionsForMode(mode);
+
+  setupDragDrop();
+}
+
+/* ============================================================
+   RESET MODE
+   ============================================================ */
+document.getElementById("reset-button").addEventListener("click", () => {
+  switchMode(currentMode);
+});
+
+/* ============================================================
+   MODE CONFIGS (SHARED FOR EXPORT/PREVIEW)
+   ============================================================ */
+const modeConfigs = [
+  { key: "grade9",  label: "Grade 9",  labelZh: "九年级", blocks: grade9Blocks,  cards: grade9Cards },
+  { key: "grade10", label: "Grade 10", labelZh: "十年级", blocks: grade10Blocks, cards: grade10Cards },
+  { key: "ibdp",    label: "IBDP",     labelZh: "IBDP",  blocks: ibBlocks,      cards: ibdpCards },
+  { key: "iad",     label: "IAD",      labelZh: "IAD",   blocks: iadBlocks,     cards: iadCards }
+];
+
+/* ============================================================
+   EXPORT TO CSV & PREVIEW OVERLAY
+   ============================================================ */
+function exportToCsv() {
+  // Ensure selections are current
+  captureCurrentSelections();
+
+  const rows = [];
+
+  // Capture student info
+  const studentEnglishName = document.getElementById("student-ename").value || "";
+  const studentChineseName = document.getElementById("student-cname").value || "";
+  const studentGrade       = document.getElementById("student-grade").value || "";
+  const studentExisting    = document.getElementById("student-existing").value || "";
+  const submissionTime     = new Date().toLocaleString(); // browser local time
+
+  // Metadata header and values
+  rows.push([
+    "studentEnglishName",
+    "studentChineseName",
+    "currentGrade",
+    "existingDehongStudent",
+    "submissionTimestamp"
+  ]);
+
+  rows.push([
+    studentEnglishName,
+    studentChineseName,
+    studentGrade,
+    studentExisting,
+    submissionTime
+  ]);
+
+  // Blank line separator
+  rows.push([]);
+
+  // Pathway selections header (include mode)
+  rows.push(["mode", "blockId", "blockTitle", "courseId", "courseTitleEn", "courseTitleZh"]);
+
+  modeConfigs.forEach(cfg => {
+    const map = savedSelections[cfg.key];
+
+    cfg.blocks.forEach(block => {
+      const cardId = map[block.id];
+      if (cardId) {
+        const card = cfg.cards.find(c => c.id === cardId);
+        if (card) {
+          rows.push([
+            cfg.label,
+            block.id,
+            block.title,
+            card.id,
+            card.title_en,
+            card.title_zh
+          ]);
+        } else {
+          rows.push([cfg.label, block.id, block.title, "", "", ""]);
+        }
+      } else {
+        rows.push([cfg.label, block.id, block.title, "", "", ""]);
+      }
+    });
+  });
+
+  const csv = rows.map(r => r.join(",")).join("\n");
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `dehong_all_pathways.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function showPreview() {
+  // Ensure we have the latest selections
+  captureCurrentSelections();
+
+  const overlay = document.getElementById("preview-overlay");
+  const body = document.getElementById("preview-body");
+  body.innerHTML = "";
+
+  // Student info
+  const studentEnglishName = document.getElementById("student-ename").value || "(not provided) / （未填写）";
+  const studentChineseName = document.getElementById("student-cname").value || "（未填写）";
+  const studentGrade       = document.getElementById("student-grade").value || "（未填写）";
+  const studentExisting    = document.getElementById("student-existing").value || "（未选择）";
+
+  body.innerHTML += `
+    <h3>Student Information / 学生信息</h3>
+    <p><strong>English Name / 英文姓名：</strong> ${studentEnglishName}</p>
+    <p><strong>Chinese Name / 中文姓名：</strong> ${studentChineseName}</p>
+    <p><strong>Current Grade / 当前年级：</strong> ${studentGrade}</p>
+    <p><strong>Existing Dehong Student? / 是否为在读德闳学生？</strong> ${studentExisting}</p>
+    <hr style="border:none;border-top:1px solid #2A3040;margin:10px 0 6px;" />
+  `;
+
+  let anyModeHasSelection = false;
+
+  // Pathway previews — only show modes with at least one selected course
+  modeConfigs.forEach(cfg => {
+    const map = savedSelections[cfg.key];
+    if (!map) return;
+
+    let modeHasSelection = false;
+    let rowsHtml = "";
+
+    cfg.blocks.forEach(block => {
+      const cardId = map[block.id];
+      let cellHtml;
+      if (cardId) {
+        const card = cfg.cards.find(c => c.id === cardId);
+        if (card) {
+          cellHtml = `${card.title_en} / ${card.title_zh}`;
+          modeHasSelection = true;
+        } else {
+          cellHtml = `<span class="preview-tag-empty">Not found / 未找到</span>`;
+        }
+      } else {
+        cellHtml = `<span class="preview-tag-empty">Not selected / 未选择</span>`;
+      }
+
+      rowsHtml += `
+        <tr>
+          <td>${block.title}</td>
+          <td>${cellHtml}</td>
+        </tr>
+      `;
+    });
+
+    // Skip this mode if the student has not selected any course in it
+    if (!modeHasSelection) return;
+
+    anyModeHasSelection = true;
+
+    body.innerHTML += `
+      <div class="preview-mode-section">
+        <div class="preview-mode-header">
+          <div class="preview-mode-title">
+            ${cfg.label} Pathway / ${cfg.labelZh} 路径
+          </div>
+          <div class="preview-mode-chip">
+            Filled for this pathway / 已填写此路径
+          </div>
+        </div>
+        <table class="preview-table">
+          <thead>
+            <tr>
+              <th>Block / 模块</th>
+              <th>Selected Course / 已选课程</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rowsHtml}
+          </tbody>
+        </table>
+      </div>
+    `;
+  });
+
+  // If no modes have any selections at all, show a gentle message
+  if (!anyModeHasSelection) {
+    body.innerHTML += `
+      <p class="preview-tag-empty">
+        No courses selected yet. Please drag courses into the blocks on the right before exporting.
+        / 尚未选择任何课程。请先将课程拖入右侧模块，然后再进行导出。
+      </p>
+    `;
+  }
+
+  overlay.style.display = "flex";
+}
+
+// Export button now opens preview
+document.getElementById("export-button").addEventListener("click", showPreview);
+
+// Preview close + confirm buttons
+document.getElementById("preview-close").addEventListener("click", () => {
+  document.getElementById("preview-overlay").style.display = "none";
+});
+
+document.getElementById("preview-export").addEventListener("click", () => {
+  exportToCsv();
+  document.getElementById("preview-overlay").style.display = "none";
+});
+
+
+/* ============================================================
+   CARD TOOLTIP LOGIC (HOVER DESCRIPTIONS)
+   ============================================================ */
+const tooltipEl = document.createElement("div");
+tooltipEl.id = "card-tooltip";
+tooltipEl.innerHTML = "";
+document.body.appendChild(tooltipEl);
+
+function showCardTooltip(card, clientX, clientY) {
+  // Read title and bilingual description directly from the DOM dataset
+  const titleText = card.querySelector(".card-title")?.textContent || "";
+  const zhTitleText = card.querySelector(".card-title-zh")?.textContent || "";
+
+  const enDesc = card.dataset.descEn || "";
+  const zhDesc = card.dataset.descZh || "";
+
+  const bodyLines = [];
+
+  // Prefer full descriptions if present (e.g. Grade 9 cards)
+  if (enDesc) bodyLines.push(`<p>${enDesc}</p>`);
+  if (zhDesc) bodyLines.push(`<p>${zhDesc}</p>`);
+
+  // Fallback: if no description is set, show the titles as the body
+  if (!bodyLines.length) {
+    if (titleText) bodyLines.push(`<p>${titleText}</p>`);
+    if (zhTitleText) bodyLines.push(`<p>${zhTitleText}</p>`);
+  }
+
+  if (!bodyLines.length) {
+    tooltipEl.style.display = "none";
+    return;
+  }
+
+  tooltipEl.innerHTML = `
+    <div class="tooltip-title">${titleText}${zhTitleText ? " / " + zhTitleText : ""}</div>
+    <div class="tooltip-body">
+      ${bodyLines.join("")}
+    </div>
+  `;
+
+  const padding = 14;
+  let left = clientX + 16;
+  let top = clientY + 16;
+
+  const rect = tooltipEl.getBoundingClientRect();
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  if (left + rect.width + padding > vw) {
+    left = clientX - rect.width - 16;
+  }
+  if (top + rect.height + padding > vh) {
+    top = clientY - rect.height - 16;
+  }
+
+  tooltipEl.style.left = `${left}px`;
+  tooltipEl.style.top = `${top}px`;
+  tooltipEl.style.display = "block";
+}
+
+function hideCardTooltip() {
+  tooltipEl.style.display = "none";
+}
+
+// Event delegation so it works in both the middle panel and blocks
+document.addEventListener("mousemove", (e) => {
+  const card = e.target.closest(".card");
+  if (card) {
+    showCardTooltip(card, e.clientX, e.clientY);
+  } else {
+    hideCardTooltip();
+  }
+});
+
+/* ============================================================
+   MODE CARD CLICK HANDLERS
+   ============================================================ */
+document.querySelectorAll(".mode-card").forEach(card => {
+  card.addEventListener("click", () => {
+    switchMode(card.dataset.mode);
+  });
+});
+
+/* ============================================================
+   INITIALISE
+   ============================================================ */
+switchMode("grade9");
+</script>
